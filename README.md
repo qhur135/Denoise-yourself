@@ -5,6 +5,8 @@ The paper has been accepted by Expert Systems with Applications (ESWA) 2025 (Q1 
 ## Abstract
 In this study, we propose a novel self-supervised approach for point cloud upsampling, integrating a pretrained denoising phase to enhance the quality and accuracy of the resulting upsampled point clouds. Most point cloud upsampling methods rely on supervised learning, requiring extensive datasets and complex parameter tuning. In contrast, our approach leverages self-sampling techniques to minimize the need for large labeled datasets, while addressing inherent noise issues through a dedicated denoise pretrain phase. We evaluate the performance of our method using the PU1K dataset, demonstrating significant improvements in the reduction of noise and the preservation of geometric features compared to baseline methods. Our proposed multi-object pretrain method outperforms existing methods, especially when using a relatively large number of points, across all performance metrics in curvature and density consolidation strategies. Additionally, our ablation study confirms that the multi-object pretrain method achieves superior performance with fewer fine-tuning iterations than traditional methods. Our experiments indicate that the proposed method effectively balances the trade-offs between data efficiency and upsampling quality, making it a robust solution for various 3D applications.
 
+Authors: Ji-Hyeon Hur, Soonjo Kwon, Hyungki Kim
+
 ## Preparation
 1. Clone the repository
 ```
@@ -45,6 +47,7 @@ bash _demos/2048_denoise.sh # for input point clouds with 2048 points
 ```
 
 3. multi model
+   
 3-1. pretrain    
 ```
 bash _demos/10k_multi/10k_multi_pretrain.sh  # for input point clouds with 10k points

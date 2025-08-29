@@ -7,6 +7,11 @@ In this study, we propose a novel self-supervised approach for point cloud upsam
 
 Authors: Ji-Hyeon Hur, Soonjo Kwon, Hyungki Kim
 
+![structure](https://github.com/user-attachments/assets/00bd92e4-3abb-48a6-bce5-c61f8aab36c9)
+
+![architecture](https://github.com/user-attachments/assets/52536401-74de-4805-b732-90fda2e7e0fc)
+
+
 ## Preparation
 1. Clone the repository
 ```

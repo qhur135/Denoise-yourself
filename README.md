@@ -70,4 +70,16 @@ You can set the `mode` variable to either `density` or `curvature` inside the sc
 `result_dir` specifies the path where the upsampled point clouds will be saved.   
 In the pretrain stage, upsampling is not performed. Instead, the trained model weights will be saved.
 
+### Citation
+```bibtex
+@article{hur2025denoise,
+  title={Denoise yourself: Self-supervised point cloud upsampling with pretrained denoising},
+  author={Hur, Ji-Hyeon and Kwon, Soonjo and Kim, Hyungki},
+  journal={Expert Systems with Applications},
+  volume={271},
+  pages={126638},
+  year={2025},
+  publisher={Elsevier}
+}
+
 

@@ -19,7 +19,6 @@ modes = ['curvature', 'density']
 # for i in range(len(data_name)):
     # data_name[i] = data_name[i].split('.off')[0]
 
-# 빈데이터 프레임
 cur_df = pd.DataFrame(index=data_name, columns=metrics)
 den_df = pd.DataFrame(index=data_name, columns=metrics)
 for mode in modes:
@@ -181,4 +180,4 @@ sheet_name = 'performence'
 cur_df.to_excel('cur'+file_path, sheet_name=sheet_name)
 den_df.to_excel('den'+file_path, sheet_name=sheet_name)
 print(proposed_win_cnt)
-print('엑셀파일 저장!')
+print('save!')

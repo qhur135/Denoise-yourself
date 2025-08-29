@@ -91,28 +91,6 @@ class Random(Dataset):
     def __len__(self):
         return self.args.iterations
 
-# ad-hoc noise는 학습이 잘 안됨 (당연?)
-# class NoiseData(Dataset):
-#     def __init__(self, pc, real_device, args):
-#         self.device = torch.device('cpu')
-#         self.real_device = real_device
-#         self.args = args
-#         self.pc: torch.Tensor = pc.to(self.device)
-#         self.n_pts = self.pc.shape[0]
-#
-#     def single(self, size):
-#         return self.pc[torch.randperm(self.n_pts)[:size], :3].permute(1, 0)
-#
-#     def __getitem__(self, item): # source와 target을 하나의 pair로 return
-#         source_sample_ind = torch.randperm(self.n_pts)[:self.args.D1]
-#         source_pc_sampled = self.pc[source_sample_ind, :3] + self.pc[source_sample_ind, 3:6] * torch.rand(len(source_sample_ind), 1) * self.args.noise
-#
-#         return source_pc_sampled, self.single(self.args.D2).to(self.device)
-#
-#     def __len__(self):
-#         return self.args.iterations
-
-
 class SubsetData(Dataset):
     def __init__(self, noise_pc, clean_pc, real_device, args):
         self.device = torch.device('cpu')
@@ -204,16 +182,6 @@ class SubsetData(Dataset):
         idx2 = pc[max(n1 - residual, 0): n1 + n2]
         return idx1, idx2
 
-    # def export_marked(self):
-    #     c = torch.zeros_like(self.clean_pc)
-    #     c[~self.criterion_mask, 0] = 255
-    #     c[self.criterion_mask, 0] = 16
-
-    #     c[self.criterion_mask, 1] = 255
-    #     c[self.criterion_mask, 2] = 255
-    #     c = c.transpose(0, 1)
-    #     util.export_pc(self.pc.transpose(0, 1), self.args.save_path / 'target-marked.xyz', color=c)
-
 
 class CurvatureData(SubsetData):
     def __init__(self, pc, real_device, args):
@@ -268,7 +236,7 @@ class NoiseData(SubsetData):
         self.pc, self.noise_ind = self.preprocess_pc(self.pc)
         self.pc = self.pc.to(self.device)
 
-        super().__init__(self.pc, self.noise_ind, real_device, args) # self.pc에 noise를 삽입했으므로 변경된 point를 넣어야 함!
+        super().__init__(self.pc, self.noise_ind, real_device, args) # Since noise was added to self.pc, the modified points must be used!
 
         print(f'Noisy Shape(Pos): {self.high_pc.shape}; Noisy Shape(Neg) {self.low_pc.shape}')
 
@@ -353,21 +321,23 @@ class PretrainPerturbationData(Dataset):
         diag = pcd.get_max_bound() - pcd.get_min_bound()
         diag_len = math.sqrt(diag[0] * diag[0] + diag[1] * diag[1] + diag[2] * diag[2])
 
-        # TODO: 일단 0.2 noise ratio, 0.016 noise ratio를 PCQA 논문을 참고하여 선정함. 추후 필요하다면 option으로 추가 필요
+        # TODO: 
+        # For now, selected 0.2 noise ratio and 0.016 noise ratio based on the PCQA paper. 
+        # If necessary, these should be added as options later.
         source_sample_ind = torch.randperm(self.n_pts)[:int(self.n_pts * 0.2)]
         pc[source_sample_ind,:3] += torch.rand(len(source_sample_ind), 1) * (0.016 * diag_len)
 
         noise_mask = torch.zeros(self.n_pts)
         noise_mask[source_sample_ind] = 1
 
-        # noise_ind는 noise인 경우 1, 아닌 경우 0이 저장된 mask
+        # noise_ind is a mask where 1 indicates noise and 0 indicates non-noise
         return torch.Tensor(pc), noise_mask
 
     def single(self, size):
         return self.pc[torch.randperm(self.n_pts)[:size], :3].permute(1, 0).unsqueeze(0).to(self.real_device)
 
     def __getitem__(self, item):
-        # pretrain의 경우에도 D1 크기의 점군을 iter마다 반환함
+        # In pretraining as well, a point cloud of size D1 is returned at each iteration
         source_sample_ind = torch.randperm(self.n_pts)[:self.args.D1]
         return self.pc[source_sample_ind,:3].transpose(0,1), self.noise_ind[source_sample_ind]
 
@@ -384,6 +354,6 @@ class Denoising(SubsetData):
         self.clean_pc: torch.Tensor = clean_pc.to(self.device)
         self.n_pts = self.clean_pc.shape[0]
 
-        super().__init__(self.noise_pc, self.clean_pc, real_device, args) # self.pc에 noise를 삽입했으므로 변경된 point를 넣어야 함!
+        super().__init__(self.noise_pc, self.clean_pc, real_device, args) # Since noise has been added to self.pc, the modified points must be used!
 
         print(f'Noisy Shape(Pos): {self.high_pc.shape}; Noisy Shape(Neg) {self.low_pc.shape}')

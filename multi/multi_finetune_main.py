@@ -1,7 +1,7 @@
 import open3d
 import sys
 import os
-# 현재 파일 기준으로 상위 디렉토리를 sys.path에 추가
+# Add the parent directory of the current file to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import torch
 import options as options

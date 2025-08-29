@@ -2,15 +2,16 @@
 export BASE_PATH=$(pwd)
 export PYTHONPATH=$BASE_PATH
 ######### finetune
-# 디렉토리 경로 설정
 data_dir="/home/jihyeon/self_sample_data/my_data/PU1K_raw_meshes/sampling/10000"
 result_dir="_result/ablation/300/finetune" 
-# epoch 100
+
 # 10k -> 40k
-## main 코드 내부도 수정!!! 
-#### pretrain weight - main_finetune_multi.py에서 직접 입력함
+# epoch 300 
+## Also modify inside main code!!! 
+## Pretrained weights – entered directly in "multi/main_finetune_multi.py"
+## model.load_state_dict(torch.load('_result/ablation/300/generators/model99_280.pt'))
+
 mode="curvature" 
-# name_list=('02954340.40f0c6599f0be25fce01c07526cf2aa4' '03046257.143e665cb61b96751311158f08f2982a' '02828884.2b065fc9d62f1540ad5067eac75a07f7' '02691156.37f2f187a1582704a29fef5d2b2f3d7')
 
 # combined_list=()
 # for pc_name in "${name_list[@]}"; do

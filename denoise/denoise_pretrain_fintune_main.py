@@ -1,7 +1,6 @@
 import open3d
 import sys
 import os
-# 현재 파일 기준으로 상위 디렉토리를 sys.path에 추가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import torch
 import options as options
@@ -21,7 +20,7 @@ def pretrain(finetune_args):
     # --- Adjust to pretrain(sweep) argument
     import copy
     args = copy.deepcopy(finetune_args)
-    args.sampling_mode = 'denoising' # Noise 1, 2 일때 관련 코드 수정해야 함에 주의!!!!!!!!!!!!!!!!!!!!!!
+    args.sampling_mode = 'denoising' 
 
     noise_pc, clean_pc = util.get_input_exp(args, center=False) # <-- center=False
     noise_pc = noise_pc.unsqueeze(0).permute(0, 2, 1).to(device)

@@ -2,13 +2,11 @@
 export BASE_PATH=$(pwd)
 export PYTHONPATH=$BASE_PATH
 ######## noise3 pretrain
-# 디렉토리 경로 설정
 data_dir="../self_sample_data/my_data/PU1K_raw_meshes/train/train_gt_pc/600" # 9988 points
 result_dir="_result/ablation/600"
 
-# pc_name="02801938.be3c2533130dd3da55f46d55537192b6"
 mode_list=("denoising")
-########### 24/04/18 #### d1, d2 2497로 해야하나?
+
 
 for mode in "${mode_list[@]}"; do
 	for pc_file in $data_dir/*.xyz; do

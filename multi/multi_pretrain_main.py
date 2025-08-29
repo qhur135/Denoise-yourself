@@ -1,7 +1,6 @@
 import open3d
 import sys
 import os
-# 현재 파일 기준으로 상위 디렉토리를 sys.path에 추가
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import torch
 import options as options
@@ -9,7 +8,6 @@ import util
 import torch.optim as optim
 from losses import chamfer_distance
 from multi_data_handler import get_multi_dataset
-# from data_handler_exp import get_dataset # len return 1 로 수정
 from torch.utils.data import DataLoader
 from models import PointNet2Generator
 
@@ -19,7 +17,7 @@ def train(args):
     # device = torch.device('cpu')
     print(f'device: {device}')
     # multi data setting
-    data_path = '../self_sample_data/my_data/PU1K_raw_meshes/train/train_gt_pc/300' # 2048, 10k pretrain할 때 모두 데이터 사용
+    data_path = '../self_sample_data/my_data/PU1K_raw_meshes/train/train_gt_pc/300' # Use the entire dataset for both 2048 and 10k pretraining
 
     noise_path = data_path + '/0.002'
     noise_file = os.listdir(noise_path)
@@ -37,9 +35,9 @@ def train(args):
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     model.train()
  
-    noise_pc_lst = [] # get_dataset에 넣을 형태로 만들어서 리스트 만들기
+    noise_pc_lst = [] # Create a list in the format required by get_dataset
     clean_pc_lst = []
-    # 모든 데이터 메모리 로드
+
     for path in data_file:
         args.pc = data_path+'/'+path
         args.noise_pc = noise_path+'/'+path # args.sampling_mode = 'denoising'

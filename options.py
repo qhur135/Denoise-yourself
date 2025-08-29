@@ -12,13 +12,7 @@ def get_parser(name='Self-Sampling') -> argparse.ArgumentParser:
     parser.add_argument('--momentum', type=float, default=0.9, metavar='M',
                         help='SGD momentum (default: 0.9)')
     parser.add_argument('--iterations', default=100000, type=int)
-    # Pretrain 비율. 0일 경우 기존과 같이 upsampling strategy만 수행함
-    # 0 이상인 경우(ex, 0.3) iteration * ratio 만큼 pretrain을 한 뒤, iteration을 수행하도록 구현
-    # 아래 1과 2를 비교하는 것이 1과 3을 비교하는 것보다 공정(?)하다고 생각해서, 실수 확률을 줄이도록 이렇게 구현한 것임
-    # 혹시 참고할만한 논문(Pretrain 수행한 경우와 아닌 경우를 비교할 때 iteration 수를 어떻게 맞추어 비교하는지)이 있다면 보고 수정 의견 주세요.
-    # 1) Curvature 10,000 iter
-    # 2) Pretrain 3,000 iter + Curvature 7,000 iter
-    # 3) Pretrain 3,000 iter + Curvature 10,000 iter
+
     parser.add_argument('--export-interval', default=1000, type=int)
     parser.add_argument('--D1', default=5000, type=int)
     parser.add_argument('--D2', default=5000, type=int)
@@ -43,10 +37,6 @@ def get_parser(name='Self-Sampling') -> argparse.ArgumentParser:
     parser.add_argument('--kmeans', action='store_true')
     parser.add_argument('--mse', action='store_true')
     parser.add_argument('--curvature-cache', type=str, default='')
-    # denoising 추가 구현 아이디어
-    # parser.add_argument('--noise_offset', default=False, type=bool) # 1. [pretrain phase] noise point offset 학습
-    # parser.add_argument('--classification_upgrade', default=False, type=bool) # 2. [pretrain phase] noise classification 개선
-    # parser.add_argument('--noise_penalty', default=False, type=bool) # 3. [fintune phase] noise point penalty 부여
 
     #----------------Pretrain 실험용 추가(240207)--------------
     parser.add_argument('--do-pretrain', default=False, type=bool)
